@@ -10,6 +10,8 @@ class Timer
 
 	protected $format = '%H:%I:%S';
 
+	protected $endedFormat = '00:00:00';
+
 	public function __construct($dateTime)
 	{
 		$this->dateTime = $dateTime;
@@ -26,6 +28,10 @@ class Timer
 
 	public function diffNow()
 	{
+		if ($this->dateTime->isPast()) {
+			return $this->endedFormat;
+		}
+		
 		return $this->now()
 			->diff($this->dateTime)
 			->format($this->format)

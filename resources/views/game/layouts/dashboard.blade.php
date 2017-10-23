@@ -79,6 +79,33 @@
                     </ul>
                 </div>
             </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul class="nav nav-justified">
+                            <li>
+                                Timers:
+                            </li>
+                            <li>
+                                <a href="/crimes" class="timer">
+                                    <strong>Crime:</strong>
+                                    <span class="countdown">
+                                        @timer($game->player()->timer->for('crime'))
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/autoburglary" class="timer">
+                                    <strong>Auto Burglary:</strong> 
+                                    <span class="countdown">
+                                        @timer($game->player()->timer->for('auto_burglary'))
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </nav>
 
         <div class="container-fluid">
@@ -95,5 +122,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('libs/countdown/jquery.countdown.js') }}"></script>
+    <script src="{{ asset('js/basic.js') }}"></script>
 </body>
 </html>

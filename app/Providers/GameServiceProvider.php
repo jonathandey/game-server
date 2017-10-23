@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Game\Game;
 use App\Game\Dice;
+use App\Game\Helpers\Timer;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use App\Game\Items\Vehicles\Vehicle;
@@ -66,6 +67,10 @@ class GameServiceProvider extends ServiceProvider
         }
 
         $this->app['App\Game\Game']->dice(new Dice);
+
+        Blade::directive('timer', function ($expression) {
+            return "<?php echo (new \App\Game\Helpers\Timer($expression))->diffNow(); ?>";
+        });
     }
 
     /**

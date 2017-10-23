@@ -12,8 +12,10 @@
 					@endif
 					@if (isset($timer))
 						<div class="alert alert-info text-center">
-							<p>You are recoving from you previous attempt...</p>
-							<strong>{{ $timer }}</strong>
+							<p>You are recovering from you previous attempt...</p>
+							<div class="timer">
+								<strong class="countdown">{{ $timer }}</strong>
+							</div>
 						</div>
 					@endif
 					<form action="/crimes" method="POST">
