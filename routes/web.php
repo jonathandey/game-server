@@ -26,6 +26,8 @@ Route::post('/vehicles', 'Game\StolenVehiclesController@manage');
 
 Route::get('/gym', 'Game\GymController@index');
 Route::post('/gym', 'Game\GymController@commit');
+Route::post('/gym/fight', 'Game\BoxingController@create');
+Route::post('/gym/fight/match', 'Game\BoxingController@fight');
 
 Auth::routes();
 

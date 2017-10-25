@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Game;
 
+use App\BoxingMatch;
 use App\Game\Actions\Gym\Gym;
 use App\Game\Exceptions\TimerNotReadyException;
 
@@ -15,11 +16,17 @@ class GymController extends ActionController
 	{
 		$timer = $this->timer();
 
+		$boxingMatches = BoxingMatch::active()
+			->orderBy(BoxingMatch::ATTRIBUTE_MONETARY_STAKE, 'desc')
+			->get()
+		;
+
 		$attributes = [
 			'actions' => $this->game()->workouts()
 				->sortBy(Gym::ATTRIBUTE_SKILL_POINTS)
 				->groupBy(Gym::ATTRIBUTE_TYPE),
-			'action' => $this->action()
+			'action' => $this->action(),
+			'fights' => $boxingMatches,
 		];
 
 		if (! is_null($timer) && ! $timer->isReady()) {

@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller as BaseController;
 
 abstract class Controller extends BaseController
 {
-	protected $request, $game;
+	protected $request, $game, $player;
 
 	public function request()
 	{
@@ -26,5 +26,14 @@ abstract class Controller extends BaseController
 		}
 
 		return $this->game = resolve(Game::class);
+	}
+
+	public function player()
+	{
+		if (! is_null($this->player)) {
+			return $this->player;
+		}
+
+		return $this->player = $this->game()->player();
 	}
 }

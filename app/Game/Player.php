@@ -4,6 +4,7 @@ namespace App\Game;
 
 use App\Timer;
 use Carbon\Carbon;
+use App\BoxingMatch;
 use App\StolenVehicle;
 use App\PlayerAttribute;
 use App\Game\Items\Item;
@@ -116,5 +117,10 @@ class Player extends Authenticatable
 	public function attribute()
 	{
 		return $this->hasOne(PlayerAttribute::class);
+	}
+
+	public function boxingMatches()
+	{
+		return $this->hasMany(BoxingMatch::class, 'originator_user_id');
 	}
 }

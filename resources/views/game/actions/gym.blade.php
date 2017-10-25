@@ -7,6 +7,15 @@
             <div class="panel panel-default">
             	<div class="panel-heading">Gymnasium</div>
             	<div class="panel-body">
+					@if (count($errors) > 0)
+					    <div class="alert alert-danger">
+					        <ul>
+					            @foreach ($errors->all() as $error)
+					                <li>{{ $error }}</li>
+					            @endforeach
+					        </ul>
+					    </div>
+					@endif
 					@if (session('message'))
 						{!! session('message') !!}
 					@endif
@@ -141,7 +150,57 @@
 								</div>
 							</div>
 						</div>
+						<div class="col-md-6">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									Fist Fight
+								</div>
+								<div class="panel-body">
+									<form action="/gym/fight" method="POST">
+										{{ csrf_field() }}
+										<p class="text-danger" style="font-size: 11px">A 5% match fee is deducted from fight winnings</p>
+										<div class="form-group">
+											<input type="text" class="form-control" name="taunt" placeholder="Taunt...">
+										</div>
+										<div class="form-group">
+											<input type="number" class="form-control" name="monetary_stake" placeholder="Monetry Stake">
+										</div>
+										<button type="submit" class="btn btn-block btn-primary">Post Fight</button>
+									</form>
+								</div>
+							</div>
+						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div class="panel panel-default">
+				<div class="panel-heading">Posted Fights</div>
+				<div class="panel-body">
+					@forelse ($fights as $fight)
+						<div class="panel panel-info">
+							<div class="panel-heading">{{ $fight->presenter()->originator() }}</div>
+							<div class="panel-body">
+								@if ($fight->presenter()->hasTaunt())
+									<em style="text-align: center;">{{ $fight->presenter()->taunt() }}</em>
+								@endif
+								<p>
+									<strong>Stake:</strong> {{ $fight->presenter()->monetaryStakeWithSymbol() }}
+								</p>
+								<form action="/gym/fight/match" method="POST">
+									{{ csrf_field() }}
+									<input type="hidden" name="fight_id" value="{{ $fight->getKey() }}">
+									<input type="submit" name="fight" class="btn btn-default btn-block" value="Fight!">
+									@if ($fight->presenter()->isPlayersMatch())
+										<input type="submit" name="cancel" class="btn btn-warning btn-block" value="Back Down">
+									@endif
+								</form>
+							</div>
+						</div>
+					@empty
+						<em class="text-center">No one has posted a fight</em>
+					@endforelse
 				</div>
 			</div>
 		</div>
