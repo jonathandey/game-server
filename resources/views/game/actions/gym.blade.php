@@ -18,79 +18,130 @@
 							</div>
 						</div>
 					@endif
-					<form action="/gym" method="POST">
-						{{ csrf_field() }}
-						<div class="workout-group">
-							<h4>Strength Training</h4>
-							<ul class="list-unstyled">
-								@foreach ($actions[1] as $workout)
-									<li>
-										<div class="radio">
-											<label for="workout-{{ $workout->getKey() }}">
-												<input type="radio" 
-													name="workout" 
-													value="{{ $workout->getKey() }}" 
-													id="workout-{{ $workout->getKey() }}">
-												{{ $workout->name }} ({{ $workout->presenter()->skillPointsWithSymbol() }})
-											</label>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									Strength Training: 
+									<strong>Level: {{ $action->presenter()->playerStrengthLevel() }}</strong>
+								</div>
+								<div class="panel-body">
+									<form action="/gym" method="POST">
+										{{ csrf_field() }}
+										<div class="workout-group">
+											<ul class="list-unstyled">
+												@foreach ($actions[1] as $workout)
+													<li>
+														<div class="radio">
+															<label for="workout-{{ $workout->getKey() }}">
+																<input type="radio" 
+																	name="workout" 
+																	value="{{ $workout->getKey() }}" 
+																	id="workout-{{ $workout->getKey() }}">
+																{{ $workout->name }} ({{ $workout->presenter()->skillPointsWithSymbol() }})
+															</label>
+														</div>
+													</li>
+												@endforeach
+											</ul>
+											<hr>
+											<div>
+												<p><strong>Progress to next level:</strong> {{ $action->presenter()->playerStrengthProgress() }} / {{ $action->presenter()->playerStrengthProgressGoal() }}</p>
+												<div class="progress">
+													<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{$action->presenter()->playerStrengthProgressPercentage()}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$action->presenter()->playerStrengthProgressPercentage()}}%;">
+														<span class="sr-only">{{$action->presenter()->playerStrengthProgressPercentage()}}% Complete</span>
+													</div>
+												</div>
+											</div>
 										</div>
-									</li>
-								@endforeach
-							</ul>
-							<div>
-								<p><strong>Level:</strong> {{ $action->presenter()->playerStrengthLevel() }}</p>
-								<p><strong>Progress to next level:</strong> {{ $action->presenter()->playerStrengthProgress() }} / {{ $action->presenter()->playerStrengthProgressGoal() }}</p>
+										<button type="submit" class="btn btn-block btn-primary">Train</button>
+									</form>
+								</div>
 							</div>
-							<hr>
 						</div>
-						<div class="workout-group">
-							<h4>Stamina Training</h4>
-							<ul class="list-unstyled">
-								@foreach ($actions[2] as $workout)
-									<li>
-										<div class="radio">
-											<label for="workout-{{ $workout->getKey() }}">
-												<input type="radio" 
-													name="workout" 
-													value="{{ $workout->getKey() }}" 
-													id="workout-{{ $workout->getKey() }}">
-												{{ $workout->name }} ({{ $workout->presenter()->skillPointsWithSymbol() }})
-											</label>
+						<div class="col-md-6">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									Stamina Training
+									<strong>Level: {{ $action->presenter()->playerStaminaLevel() }}</strong>
+								</div>
+								<div class="panel-body">
+									<form action="/gym" method="POST">
+										{{ csrf_field() }}
+										<div class="workout-group">
+											<ul class="list-unstyled">
+												@foreach ($actions[2] as $workout)
+													<li>
+														<div class="radio">
+															<label for="workout-{{ $workout->getKey() }}">
+																<input type="radio" 
+																	name="workout" 
+																	value="{{ $workout->getKey() }}" 
+																	id="workout-{{ $workout->getKey() }}">
+																{{ $workout->name }} ({{ $workout->presenter()->skillPointsWithSymbol() }})
+															</label>
+														</div>
+													</li>
+												@endforeach
+											</ul>
+											<hr>
+											<div>
+												<p><strong>Progress to next level:</strong> {{ $action->presenter()->playerStaminaProgress() }} / {{ $action->presenter()->playerStaminaProgressGoal() }}</p>
+												<div class="progress">
+													<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{$action->presenter()->playerStaminaProgressPercentage()}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$action->presenter()->playerStaminaProgressPercentage()}}%;">
+														<span class="sr-only">{{$action->presenter()->playerStaminaProgressPercentage()}}% Complete</span>
+													</div>
+												</div>
+											</div>
 										</div>
-									</li>
-								@endforeach
-							</ul>
-							<div>
-								<p><strong>Level:</strong> {{ $action->presenter()->playerStaminaLevel() }}</p>
-								<p><strong>Progress to next level:</strong> {{ $action->presenter()->playerStaminaProgress() }} / {{ $action->presenter()->playerStaminaProgressGoal() }}</p>
+										<button type="submit" class="btn btn-block btn-primary">Train</button>
+									</form>
+								</div>
 							</div>
-							<hr>
 						</div>
-						<div class="workout-group">
-							<h4>Agility Training</h4>
-							<ul class="list-unstyled">
-								@foreach ($actions[3] as $workout)
-									<li>
-										<div class="radio">
-											<label for="workout-{{ $workout->getKey() }}">
-												<input type="radio" 
-													name="workout" 
-													value="{{ $workout->getKey() }}" 
-													id="workout-{{ $workout->getKey() }}">
-												{{ $workout->name }} ({{ $workout->presenter()->skillPointsWithSymbol() }})
-											</label>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									Agility Training:
+									<strong>Level: {{ $action->presenter()->playerAgilityLevel() }}</strong>
+								</div>
+								<div class="panel-body">
+									<form action="/gym" method="POST">
+										{{ csrf_field() }}
+										<div class="workout-group">
+											<ul class="list-unstyled">
+												@foreach ($actions[3] as $workout)
+													<li>
+														<div class="radio">
+															<label for="workout-{{ $workout->getKey() }}">
+																<input type="radio" 
+																	name="workout" 
+																	value="{{ $workout->getKey() }}" 
+																	id="workout-{{ $workout->getKey() }}">
+																{{ $workout->name }} ({{ $workout->presenter()->skillPointsWithSymbol() }})
+															</label>
+														</div>
+													</li>
+												@endforeach
+											</ul>
+											<hr>
+											<div>
+												<p><strong>Progress to next level:</strong> {{ $action->presenter()->playerAgilityProgress() }} / {{ $action->presenter()->playerAgilityProgressGoal() }}</p>
+												<div class="progress">
+													<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{$action->presenter()->playerAgilityProgressPercentage()}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$action->presenter()->playerAgilityProgressPercentage()}}%;">
+														<span class="sr-only">{{$action->presenter()->playerAgilityProgressPercentage()}}% Complete</span>
+													</div>
+												</div>
+											</div>
 										</div>
-									</li>
-								@endforeach
-							</ul>
-							<div>
-								<p><strong>Level:</strong> {{ $action->presenter()->playerAgilityLevel() }}</p>
-								<p><strong>Progress to next level:</strong> {{ $action->presenter()->playerAgilityProgress() }} / {{ $action->presenter()->playerAgilityProgressGoal() }}</p>
+										<button type="submit" class="btn btn-block btn-primary">Train</button>
+									</form>
+								</div>
 							</div>
-							<hr>
 						</div>
-						<button type="submit" class="btn btn-block btn-primary">Train</button>
-					</form>
+					</div>
 				</div>
 			</div>
 		</div>

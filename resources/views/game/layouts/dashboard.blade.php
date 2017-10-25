@@ -130,7 +130,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('libs/countdown/jquery.countdown.js') }}"></script>
     <script src="{{ asset('js/basic.js') }}"></script>
 </body>
 </html>

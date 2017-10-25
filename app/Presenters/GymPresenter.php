@@ -85,6 +85,33 @@ class GymPresenter extends ActionPresenter
 		return $this->playerProgressGoal(Gym::TYPE_AGILITY);
 	}
 
+	public function playerStrengthProgressPercentage()
+	{
+		if ($this->playerStrengthProgress() === 0) {
+			return 0;
+		}
+		
+		return 100 / ($this->playerStrengthProgressGoal() / $this->playerStrengthProgress());
+	}
+
+	public function playerStaminaProgressPercentage()
+	{
+		if ($this->playerStaminaProgress() === 0) {
+			return 0;
+		}
+		
+		return 100 / ($this->playerStaminaProgressGoal() / $this->playerStaminaProgress());
+	}
+
+	public function playerAgilityProgressPercentage()
+	{
+		if ($this->playerAgilityProgress() === 0) {
+			return 0;
+		}
+		
+		return 100 / ($this->playerAgilityProgressGoal() / $this->playerAgilityProgress());
+	}
+
 	protected function playerLevel($for)
 	{
 		if ($for == Gym::TYPE_STRENGTH) {
