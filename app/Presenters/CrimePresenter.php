@@ -4,16 +4,16 @@ namespace App\Presenters;
 
 use App\Game\Helpers\Money;
 
-class CrimePresenter extends ActionPresenter
+class CrimePresenter extends CrimeActionPresenter
 {
 	protected $unformattedSuccessMessage = 'Your attempt to %s was successful! You got away with %s.';
 
 	protected function outcomeMessageAttributes()
 	{
-		$awards = ($this->crime->awards()) ?: null;
+		$awards = ($this->action->awards()) ?: null;
 
 		$attributes = [
-			$this->crime->name(),
+			$this->action->name(),
 		];
 
 		if (! is_null($awards)) {

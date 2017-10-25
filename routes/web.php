@@ -24,6 +24,9 @@ Route::post('/autoburglary', 'Game\AutoBurglaryController@commit');
 Route::get('/vehicles', 'Game\StolenVehiclesController@index');
 Route::post('/vehicles', 'Game\StolenVehiclesController@manage');
 
+Route::get('/gym', 'Game\GymController@index');
+Route::post('/gym', 'Game\GymController@commit');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

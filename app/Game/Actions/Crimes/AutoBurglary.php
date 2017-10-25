@@ -9,7 +9,7 @@ use App\Game\Traits\HasTimer;
 use App\Presenters\Presentable;
 use App\Game\Actions\Actionable;
 use App\Presenters\AutoBurglaryPresenter;
-use App\Game\Outcomes\SkillIncrement;
+use App\Game\Outcomes\CrimeSkillIncrement;
 use App\Game\Items\Vehicles\Vehicle;
 use App\Game\Interfaces\TimerRestricted;
 use App\Game\Outcomes\Rewards\Items\Vehicle as VehicleReward;
@@ -57,7 +57,7 @@ class AutoBurglary extends Action implements Actionable, TimerRestricted
 	public function rewards()
 	{
 		$rewards = collect([
-			(new SkillIncrement)->between(
+			(new CrimeSkillIncrement)->between(
 				self::SKILL_SUCCESSFUL_INCREMENT_LOW, self::SKILL_SUCCESSFUL_INCREMENT_HIGH
 			),
 		]);
@@ -76,7 +76,7 @@ class AutoBurglary extends Action implements Actionable, TimerRestricted
 	public function punishments()
 	{
 		$punishments = collect([
-			(new SkillIncrement)->between(
+			(new CrimeSkillIncrement)->between(
 				self::SKILL_FAILED_INCREMENT_LOW, self::SKILL_FAILED_INCREMENT_HIGH
 			),
 		]);

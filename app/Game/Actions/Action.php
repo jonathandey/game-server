@@ -101,6 +101,11 @@ abstract class Action extends Model
 		return $this->player($player);
 	}
 
+	protected function successfulAttempt()
+	{
+		$this->successful = true;
+	}
+
 	protected function skilledAttempt()
 	{
 		$percentage = $this->skillPercentageChance();
@@ -149,6 +154,6 @@ abstract class Action extends Model
 
 	protected function playerSkill()
 	{
-		return $this->player()->skill;
+		return $this->player()->attribute->crime_skill;
 	}
 }

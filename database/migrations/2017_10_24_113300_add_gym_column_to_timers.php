@@ -1,11 +1,10 @@
 <?php
 
-use App\Game\Player;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPlayerAttributesToUser extends Migration
+class AddGymColumnToTimers extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +13,9 @@ class AddPlayerAttributesToUser extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('timers', function (Blueprint $table) {
             //
-            $table->unsignedInteger(Player::ATTRIBUTE_MONEY)->default(0);
-            $table->float('skill')->default(0);
+            $table->timestamp('gym')->nullable();
         });
     }
 
@@ -28,9 +26,9 @@ class AddPlayerAttributesToUser extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('timers', function (Blueprint $table) {
             //
-            $table->dropColumn(Player::ATTRIBUTE_MONEY, Player::ATTRIBUTE_SKILL);
+            $table->dropColumn('gym');
         });
     }
 }

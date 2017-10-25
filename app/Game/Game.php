@@ -4,10 +4,12 @@ namespace App\Game;
 
 use App\Game\Player;
 use App\Game\Items\Item;
+use App\Game\Actions\Gym\Gym;
 use App\Game\Items\Vehicles\Vehicle;
 use Illuminate\Support\Collection;
 use App\Game\Actions\Crimes\Crime;
-use App\Game\Outcomes\SkillIncrement;
+use App\Game\Outcomes\CrimeSkillIncrement;
+use App\Game\Outcomes\Gym\SkillIncrement as GymSkillIncrement;
 use App\Game\Actions\Crimes\AutoBurglary;
 use App\Game\Outcomes\Rewards\Money as MoneyReward;
 use App\Game\Outcomes\Rewards\Items\Item as ItemReward;
@@ -90,31 +92,24 @@ class Game
 		}
 	}
 
-	public function autoBurglaries(Collection $autoBurglaries = null)
+	public function workouts()
 	{
-		if (is_null($autoBurglaries)) {
-			return $this->autoBurglaries;
-		}
+		return Gym::get();
+	}
 
-		$this->autoBurglaries = $autoBurglaries;
-
-		return $this;
+	public function autoBurglaries()
+	{
+		return AutoBurglary::get();
 	}
 
 	public function vehicles(Collection $vehicles = null)
 	{
-		if (is_null($vehicles)) {
-			return $this->vehicles;
-		}
-
-		$this->vehicles = $vehicles;
-
-		return $this;
+		return Vehicle::get();
 	}
 
 	public function player()
 	{
-		return request()->user();
+		return request()->user()->load(['attribute', 'timer']);
 	}
 
 	public function rewardPlayer(Collection $rewards = null, Player $player)
@@ -134,10 +129,14 @@ class Game
 				);
 			}
 
-			if ($reward instanceof SkillIncrement) {
-				$player->incrementSkill(
+			if ($reward instanceof CrimeSkillIncrement) {
+				$player->attribute->incrementCrimeSkill(
 					$value
 				);
+			}
+
+			if ($reward instanceof GymSkillIncrement) {
+				$player->attribute->incrementGymSkill($reward);
 			}
 
 			if ($reward instanceof ItemReward) {
@@ -164,8 +163,8 @@ class Game
 			// 	$player->goTo(Jail::class)->forSeconds($punishment->timeout());
 			// }
 
-			if ($punishment instanceof SkillIncrement) {
-				$player->incrementSkill(
+			if ($punishment instanceof CrimeSkillIncrement) {
+				$player->attribute->incrementCrimeSkill(
 					$punishment->value()
 				);
 			}

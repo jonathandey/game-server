@@ -5,6 +5,7 @@ namespace App\Game;
 use App\Timer;
 use Carbon\Carbon;
 use App\StolenVehicle;
+use App\PlayerAttribute;
 use App\Game\Items\Item;
 use App\Game\Actions\Actionable;
 use App\Presenters\PlayerPresenter;
@@ -20,8 +21,6 @@ class Player extends Authenticatable
 	use Notifiable, Presentable;
 
 	const ATTRIBUTE_MONEY = 'money';
-
-	const ATTRIBUTE_SKILL = 'skill';
 
 	protected $presenter = PlayerPresenter::class;
 
@@ -89,11 +88,6 @@ class Player extends Authenticatable
 		$this->takeMoney($value);
 	}
 
-	public function incrementSkill($value)
-	{
-		$this->increment(self::ATTRIBUTE_SKILL, $value);
-	}
-
 	public function give($item)
 	{
 		if ($item instanceof StolenVehicle) {
@@ -119,8 +113,8 @@ class Player extends Authenticatable
 		return $this->hasOne(Timer::class);
 	}
 
-	public function experience()
+	public function attribute()
 	{
-		return $this->hasOne(Experience::class);
+		return $this->hasOne(PlayerAttribute::class);
 	}
 }

@@ -44,7 +44,7 @@
                         </li>
                         <li>
                             <a>
-                            	<strong>Skill:</strong> {{ $game->player()->skill }}
+                            	<strong>Crime Skill:</strong> {{ $game->player()->attribute->crime_skill }}
                             </a>
                         </li>
                     </ul>
@@ -99,6 +99,14 @@
                                     <strong>Auto Burglary:</strong> 
                                     <span class="countdown">
                                         @timer($game->player()->timer->for('auto_burglary'))
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/gym" class="timer">
+                                    <strong>Gym</strong> 
+                                    <span class="countdown">
+                                        @timer($game->player()->timer->for('gym'))
                                     </span>
                                 </a>
                             </li>

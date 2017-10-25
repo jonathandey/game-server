@@ -8,7 +8,7 @@ use App\Game\Traits\HasTimer;
 use App\Presenters\Presentable;
 use App\Game\Actions\Actionable;
 use App\Presenters\CrimePresenter;
-use App\Game\Outcomes\SkillIncrement;
+use App\Game\Outcomes\CrimeSkillIncrement;
 use App\Game\Interfaces\TimerRestricted;
 use App\Game\Outcomes\Rewards\Money as MoneyReward;
 
@@ -91,7 +91,7 @@ class Crime extends Action implements Actionable, TimerRestricted
 			(new MoneyReward)->between(
 				$this->minPayout(), $this->maxPayout()
 			),
-			(new SkillIncrement)->between(
+			(new CrimeSkillIncrement)->between(
 				self::SKILL_SUCCESSFUL_INCREMENT_LOW, self::SKILL_SUCCESSFUL_INCREMENT_HIGH
 			),
 		]);
@@ -102,7 +102,7 @@ class Crime extends Action implements Actionable, TimerRestricted
 	public function punishments()
 	{
 		$punishments = collect([
-			(new SkillIncrement)->between(
+			(new CrimeSkillIncrement)->between(
 				self::SKILL_FAILED_INCREMENT_LOW, self::SKILL_FAILED_INCREMENT_HIGH
 			),
 		]);
@@ -115,6 +115,11 @@ class Crime extends Action implements Actionable, TimerRestricted
 	public function getTimerDuration()
 	{
 		return self::TIMER_DURATION;
+	}
+
+	public function getSkillAdjustableKey()
+	{
+		return 'crime_random_adjustment';
 	}
 
 	public function percentage()

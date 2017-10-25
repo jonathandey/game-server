@@ -4,7 +4,7 @@ namespace App\Game\Outcomes;
 
 use App\Game\Game;
 
-class SkillIncrement extends Outcome
+class CrimeSkillIncrement extends Outcome
 {
 	protected $value = 0;
 
