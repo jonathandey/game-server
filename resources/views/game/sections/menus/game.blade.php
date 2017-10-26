@@ -1,6 +1,15 @@
-<div class="container">
-	<div class="row">
-		<div class="col-md-3">
+<div class="row">
+	<div class="col-md-12">
+		<a class="btn btn-default btn-block visible-xs visible-sm" 
+			role="button" 
+			data-toggle="collapse" 
+			href="#gameMenu" 
+			aria-expanded="false" 
+			aria-controls="gameMenu"
+			style="margin-bottom: 20px">
+			Toggle Menu
+		</a>
+		<div class="hidden-xs hidden-sm" id="gameMenu">
 			<div class="panel panel-default">
             	<div class="panel-heading">Game</div>
             	<div class="panel-body">
