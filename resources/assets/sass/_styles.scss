@@ -1,0 +1,5 @@
+@include breakpoint($lg) {
+	#gameMenu.collapse {
+		display: block;
+	}
+}
