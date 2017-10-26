@@ -1,4 +1,7 @@
 @inject('game', 'App\Game\Game')
+@php
+    $notificationsCount = $game->player()->unreadNotifications()->count();
+@endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
@@ -32,6 +35,20 @@
                     <a class="navbar-brand" href="{{ url('/') }}">
                         {{ $game->name() }}
                     </a>
+                    <div class="hidden-md hidden-lg">
+                        <p class="navbar-text">
+                            <a href="/notifications">
+                                @if ($notificationsCount > 0)
+                                    <i class="fa fa-bell" aria-hidden="true"></i>
+                                    <span class="badge badge-danger">
+                                        {{ $notificationsCount }}
+                                    </span>
+                                @else
+                                    <i class="fa fa-bell-o" aria-hidden="true"></i>
+                                @endif
+                            </a>
+                        </p>
+                    </div>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -56,6 +73,18 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
+                            <li class="hidden-xs hidden-sm">
+                                <a href="/notifications">
+                                    @if ($notificationsCount > 0)
+                                        <i class="fa fa-bell" aria-hidden="true"></i>
+                                        <span class="badge badge-danger">
+                                            {{ $notificationsCount }}
+                                        </span>
+                                    @else
+                                        <i class="fa fa-bell-o" aria-hidden="true"></i>
+                                    @endif
+                                </a>
+                            </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>

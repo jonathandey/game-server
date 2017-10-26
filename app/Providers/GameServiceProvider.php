@@ -93,6 +93,10 @@ class GameServiceProvider extends ServiceProvider
         Blade::directive('timer', function ($expression) {
             return "<?php echo (new \App\Game\Helpers\Timer($expression))->diffNow(); ?>";
         });
+
+        Blade::directive('money', function ($expression) {
+            return "<?php echo (new App\Game\Helpers\Money)->numberFormatWithSymbol($expression); ?>";
+        });
     }
 
     /**
