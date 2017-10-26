@@ -150,7 +150,7 @@
         		<div class="col-md-2">
         			@include('game.sections.menus.game')
         		</div>
-        		<div class="col-md-9 col-md-offset-1">
+        		<div class="col-md-10">
         			@yield('content')
         		</div>
         	</div>
