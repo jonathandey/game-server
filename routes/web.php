@@ -29,6 +29,8 @@ Route::post('/gym', 'Game\GymController@commit');
 Route::post('/gym/fight', 'Game\BoxingController@create');
 Route::post('/gym/fight/match', 'Game\BoxingController@fight');
 
+Route::get('/notifications', 'Game\NotificationsController@index');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

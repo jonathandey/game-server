@@ -13,9 +13,13 @@ class BoxingMatch extends Model
 
 	const ATTRIBUTE_MONETARY_STAKE = 'monetary_stake';
 
-	const ATTRIBUTE_VICTOR_USER_ID = 'victor_user_id';
+    const ATTRIBUTE_VICTOR_USER_ID = 'victor_user_id';
+
+	const ATTRIBUTE_CHALLENGER_USER_ID = 'challenger_user_id';
 
     const ATTRIBUTE_DRAW = 'draw';
+
+    const FIGHT_FEE = 0.05;
 
 	protected $presenter = BoxingMatchPresenter::class;
 

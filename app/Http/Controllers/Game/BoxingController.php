@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Game;
 
 use Validator;
 use App\BoxingMatch;
+use App\Notifications\WonBoxingMatch;
+use App\Notifications\LostBoxingMatch;
+use App\Notifications\DrawnBoxingMatch;
 use App\Game\Actions\Gym\CommenceBoxingMatch;
 use App\Game\Exceptions\NotEnoughMoneyException;
 
@@ -71,8 +74,11 @@ class BoxingController extends Controller
 			$this->player()->tryToTakeMoney(
 				$boxingMatch->{BoxingMatch::ATTRIBUTE_MONETARY_STAKE}
 			);
+
 			$boxingMatch->{BoxingMatch::ATTRIBUTE_MONETARY_STAKE} += 
 				$boxingMatch->{BoxingMatch::ATTRIBUTE_MONETARY_STAKE};
+
+			$boxingMatch->{BoxingMatch::ATTRIBUTE_CHALLENGER_USER_ID} = $this->player()->getKey();
 
 			$boxingMatch->save();
 		} catch(NotEnoughMoneyException $e) {
@@ -80,46 +86,77 @@ class BoxingController extends Controller
 			return redirect()->back()->with(compact('message'));
 		}
 		
-		$fight = $this->commenceFight($boxingMatch)->fight();
-
-		$fee = round($boxingMatch->{BoxingMatch::ATTRIBUTE_MONETARY_STAKE} * 0.05);
-		$totalReward = $boxingMatch->{BoxingMatch::ATTRIBUTE_MONETARY_STAKE} - $fee;	
+		$fight = $this->commenceFight($boxingMatch, $this->player())->fight();
+		$fightReward = $this->calculateFightReward($boxingMatch);
 
 		if ($fight->wasADraw()) {
-			$share = $totalReward / 2;
-
-			$fight->originator()->addMoney($share);
-			$fight->challenger()->addMoney($share);
-
 			$boxingMatch->{BoxingMatch::ATTRIBUTE_DRAW} = true;
 			$boxingMatch->save();
 
-			$message = "<div class='alert alert-info'>The fight ended with no clear winner. The steak was split.</div>";
-			return redirect()->back()->with(compact('message'));
+			$fight->originator()->notify(new DrawnBoxingMatch($boxingMatch, $fightReward));
+
+			$fightReward = $fightReward / 2;
+			return $this->fightDrawResult($fight, $fightReward);
 		}
 
 		if ($fight->winner()->getKey() == $fight->challenger()->getKey()) {
-			$fight->challenger()->addMoney($totalReward);
 			$boxingMatch->{BoxingMatch::ATTRIBUTE_VICTOR_USER_ID} = $fight->challenger()->getKey();
 			$boxingMatch->save();
 
-			$message = "<div class='alert alert-success'>You knocked the living delights out of them!</div>";
-			return redirect()->back()->with(compact('message'));			
+			$fight->originator()->notify(
+				new LostBoxingMatch($boxingMatch, $boxingMatch->{BoxingMatch::ATTRIBUTE_MONETARY_STAKE})
+			);
+
+			return $this->fightWonResult($fight, $fightReward);
 		}
 
 		if ($fight->winner()->getKey() == $fight->originator()->getKey()) {
-			$fight->originator()->addMoney($totalReward);
 			$boxingMatch->{BoxingMatch::ATTRIBUTE_VICTOR_USER_ID} = $fight->originator()->getKey();
 			$boxingMatch->save();
 
-			$message = "<div class='alert alert-danger'>You got the crap beaten out of you...</div>";
-			return redirect()->back()->with(compact('message'));			
+			$fight->originator()->notify(
+				new WonBoxingMatch($boxingMatch, $boxingMatch->{BoxingMatch::ATTRIBUTE_MONETARY_STAKE})
+			);
+			
+			return $this->fightLostResult($fight, $fightReward);
 		}
 	}
 
-	protected function commenceFight($boxingMatch)
+	protected function fightDrawResult($fight, $reward)
 	{
-		return new CommenceBoxingMatch($boxingMatch, $this->player());
+		$fight->originator()->addMoney($reward);
+		$fight->challenger()->addMoney($reward);
+
+		$message = "<div class='alert alert-info'>The fight ended with no clear winner. The steak was split.</div>";
+		return redirect()->back()->with(compact('message'));
+	}
+
+	protected function fightWonResult($fight, $reward)
+	{
+		$fight->challenger()->addMoney($reward);
+			
+		$message = "<div class='alert alert-success'>You knocked the living daylights out of them!</div>";
+		return redirect()->back()->with(compact('message'));
+	}
+
+	protected function fightLostResult($fight, $reward)
+	{
+		$fight->originator()->addMoney($reward);
+
+		$message = "<div class='alert alert-danger'>You got the crap beaten out of you...</div>";
+		return redirect()->back()->with(compact('message'));	
+	}
+
+	protected function calculateFightReward(BoxingMatch $boxingMatch)
+	{
+		$fee = round($boxingMatch->{BoxingMatch::ATTRIBUTE_MONETARY_STAKE} * BoxingMatch::FIGHT_FEE);
+		
+		return $boxingMatch->{BoxingMatch::ATTRIBUTE_MONETARY_STAKE} - $fee;	
+	}
+
+	protected function commenceFight($boxingMatch, $challenger)
+	{
+		return new CommenceBoxingMatch($boxingMatch, $challenger);
 	}
 
 	protected function cancelFight(BoxingMatch $boxingMatch)
