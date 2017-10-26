@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 col-md-offset-1">
         <div class="panel panel-default">
         	<div class="panel-heading">My Vehicles</div>
         	<div class="panel-body">
