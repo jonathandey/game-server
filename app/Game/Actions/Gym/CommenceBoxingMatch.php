@@ -77,6 +77,7 @@ class CommenceBoxingMatch
 			// Players are at equal chance.
 			if ($this->originator->boxingSkillPercentage
 				 == $this->challenger->boxingSkillPercentage) {
+				dd('equal');
 				$roll = round($this->game->dice()->roll(1, 2));
 
 				$winner = $this->originator;
@@ -166,7 +167,9 @@ class CommenceBoxingMatch
 		$gymAttributes['agility'] += $player->attribute->{PlayerAttribute::ATTRIBUTE_GYM_AGILITY_LEVEL};
 		$gymAttributes['strength'] += $player->attribute->{PlayerAttribute::ATTRIBUTE_GYM_STRENGTH_LEVEL};
 
-		return 100 / ($gymAttributes['strength'] / $gymAttributes['stamina']) * $gymAttributes['agility'];
+		$calc = ($gymAttributes['strength'] * ($gymAttributes['agility'] * 10)) * $gymAttributes['stamina'];
+
+		return $calc;
 	}
 
 	protected function calculatePlayersSkillPercentage($originatorSkill, $challengerSkill)

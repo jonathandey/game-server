@@ -10,6 +10,16 @@ abstract class Controller extends BaseController
 {
 	protected $request, $game, $player;
 
+	/**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
 	public function request()
 	{
 		if (! is_null($this->request)) {

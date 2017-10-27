@@ -9,16 +9,6 @@ abstract class ActionController extends Controller
 {
 	protected $actionClass = null;
 
-	/**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
 	public function index()
 	{
 		$timer = $this->timer();
