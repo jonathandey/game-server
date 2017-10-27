@@ -13,4 +13,9 @@ abstract class Presenter
 	{
 		return "<div class='alert alert-success text-center'>{$successMessage}</div>";
 	}
+
+	public function htmlInfoMessage($successMessage)
+	{
+		return "<div class='alert alert-info text-center'>{$successMessage}</div>";
+	}
 }
