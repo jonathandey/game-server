@@ -13,6 +13,7 @@
 				@endif
 				<form action="/vehicles" method="POST">
 					{{ csrf_field() }}
+					<p>Manage vehicles:</p>
 					<div class="btn-group" role="group" aria-label="Manage vehicles">
 						<input type="submit" name="drop" value="Drop" class="btn btn-default">
 						<input type="submit" name="sell" value="Sell" class="btn btn-default">
