@@ -19,7 +19,7 @@ class BoxingController extends Controller
 		$validation = Validator::make(
 			$this->request()->all(), 
 			[
-				'monetary_stake' => 'required|min:1|numeric',
+				'monetary_stake' => 'required|min:100|numeric',
 				'taunt' => 'max:40',
 			]
 		);
