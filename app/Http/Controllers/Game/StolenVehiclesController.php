@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Game;
 
 use App\StolenVehicle;
 use App\Game\Items\Vehicles\Vehicle;
+use App\Http\Requests\ManageVehicles;
+use App\Http\Controllers\Traits\HasModelContext;
 use App\Game\Exceptions\NotEnoughMoneyException;
 
 class StolenVehiclesController extends Controller
 {
+	use HasModelContext;
+
+	protected $modelClass = StolenVehicle::class;
+
 	protected $player;
 
 	/**
@@ -32,7 +38,7 @@ class StolenVehiclesController extends Controller
 		return view('game.actions.garage', compact('stolenVehicles'));
 	}
 
-	public function manage()
+	public function manage(ManageVehicles $request)
 	{
 		// Todo: Ensure actions are only carried out on vehicles belonging to the player
 		$this->player = $this->game()->player();
@@ -67,7 +73,9 @@ class StolenVehiclesController extends Controller
 			}
 		}
 
-		$message = "{$countProccessedVehicles} out of {$countSelectedVehicles} vehicles have been processed";
+		$message = $this->model()->presenter()->htmlInfoMessage(
+			"{$countProccessedVehicles} out of {$countSelectedVehicles} vehicles have been processed"
+		);
 
 		return redirect()->back()->with(compact('message'));
 	}
@@ -80,7 +88,6 @@ class StolenVehiclesController extends Controller
 			->player()
 			->vehicles()
 			->where(StolenVehicle::ATTRIBUTE_GARAGED, StolenVehicle::PLAYER_GARAGED_NO)
-			->where(StolenVehicle::ATTRIBUTE_DROPPED, StolenVehicle::PLAYER_DROPPED_NO)
 			->whereIn('id', $vehicleIds)
 			->update([StolenVehicle::ATTRIBUTE_DROPPED => StolenVehicle::PLAYER_DROPPED_YES])
 		;

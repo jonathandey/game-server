@@ -6,11 +6,7 @@
         <div class="panel panel-default">
         	<div class="panel-heading">My Vehicles</div>
         	<div class="panel-body">
-				@if (session('message'))
-					<p>
-						<strong>{!! session('message') !!}</strong>
-					</p>
-				@endif
+				@include('game.shared.messages')
 				<form action="/vehicles" method="POST">
 					{{ csrf_field() }}
 					<p>Manage vehicles:</p>
