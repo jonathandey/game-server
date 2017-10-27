@@ -23,6 +23,18 @@ class Player extends Authenticatable
 
 	const ATTRIBUTE_MONEY = 'money';
 
+	const ATTRIBUTE_LAST_ACTIVE_AT = 'last_active_at';
+
+	const PRESENCE_STATUS_OFFLINE = 0;
+
+	const PRESENCE_STATUS_ONLINE = 1;
+
+	const PRESENCE_STATUS_IDLE = 2;
+
+	const PRESENCE_STATUS_ONLINE_TIME = 120;
+
+	const PRESENCE_STATUS_IDLE_TIME = 1800;
+
 	protected $presenter = PlayerPresenter::class;
 
 	public function commit(Actionable $action)
@@ -122,5 +134,69 @@ class Player extends Authenticatable
 	public function boxingMatches()
 	{
 		return $this->hasMany(BoxingMatch::class, 'originator_user_id');
+	}
+
+	public function updateActiveTime()
+	{
+		$this->{self::ATTRIBUTE_LAST_ACTIVE_AT} = $this->freshTimestamp();
+		$this->save();
+	}
+
+	public function logout()
+	{
+		$this->{self::ATTRIBUTE_LAST_ACTIVE_AT} = null;
+		$this->save();
+	}
+
+	public function scopeOnline($query)
+	{
+		$query->whereNotNull(self::ATTRIBUTE_LAST_ACTIVE_AT)
+			->where(
+				self::ATTRIBUTE_LAST_ACTIVE_AT, '>=', $this->idleTimeAgo()
+			)
+		;
+	}
+
+	public function isOnline()
+	{
+		return ! is_null($this->{self::ATTRIBUTE_LAST_ACTIVE_AT}) &&
+			$this->{self::ATTRIBUTE_LAST_ACTIVE_AT} >= $this->onlineTimeAgo()
+		;
+	}
+
+	public function isIdle()
+	{
+		return ! is_null($this->{self::ATTRIBUTE_LAST_ACTIVE_AT}) &&
+			$this->{self::ATTRIBUTE_LAST_ACTIVE_AT} <= $this->onlineTimeAgo()
+			&& $this->{self::ATTRIBUTE_LAST_ACTIVE_AT} > $this->idleTimeAgo()
+		;
+	}
+
+	public function isOffline()
+	{
+		return is_null($this->{self::ATTRIBUTE_LAST_ACTIVE_AT});
+	}
+
+	public function presenceStatus()
+	{
+		if ($this->isIdle()) {
+			return self::PRESENCE_STATUS_IDLE;
+		}
+
+		if ($this->isOnline()) {
+			return self::PRESENCE_STATUS_ONLINE;
+		}
+
+		return self::PRESENCE_STATUS_OFFLINE;
+	}
+
+	protected function onlineTimeAgo()
+	{
+		return (new Carbon)->subSeconds(self::PRESENCE_STATUS_ONLINE_TIME);
+	}
+
+	protected function idleTimeAgo()
+	{
+		return (new Carbon)->subSeconds(self::PRESENCE_STATUS_IDLE_TIME);
 	}
 }

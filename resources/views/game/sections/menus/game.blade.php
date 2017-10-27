@@ -18,7 +18,7 @@
 							<a class="btn btn-plain" href="/home">Statistics</a>
 						</li>
 						<li>
-							<a class="btn btn-plain" href="/home">Users Online</a>
+							<a class="btn btn-plain" href="/usersonline">Users Online</a>
 						</li>
 					</ul>
             	</div>
