@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Game;
 
 use Validator;
 use App\BoxingMatch;
+use App\Http\Requests\PostFight;
 use App\Notifications\WonBoxingMatch;
 use App\Notifications\LostBoxingMatch;
 use App\Notifications\DrawnBoxingMatch;
@@ -14,23 +15,8 @@ class BoxingController extends Controller
 {
 	protected $invalidFightMessage = "<div class='alert alert-danger'>Invalid fight!</div>";
 
-	public function create()
+	public function create(PostFight $request)
 	{
-		$validation = Validator::make(
-			$this->request()->all(), 
-			[
-				'monetary_stake' => 'required|min:100|numeric',
-				'taunt' => 'max:40',
-			]
-		);
-
-		if ($validation->fails()) {
-			return redirect()->back()
-				->withErrors($validation)
-				->withInput()
-			;
-		}
-
 		$attributes = $this->request()->only(['monetary_stake', 'taunt']);
 
 		try {
