@@ -2,6 +2,7 @@
 
 namespace App\Game;
 
+use App\User;
 use App\Game\Player;
 use App\Game\Items\Item;
 use App\Game\Actions\Gym\Gym;
@@ -110,6 +111,11 @@ class Game
 	public function player()
 	{
 		return request()->user()->load(['attribute', 'timer']);
+	}
+
+	public function usersOnline()
+	{
+		return User::online()->get();
 	}
 
 	public function rewardPlayer(Collection $rewards = null, Player $player)
