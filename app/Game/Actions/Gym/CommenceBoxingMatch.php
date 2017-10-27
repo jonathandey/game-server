@@ -175,8 +175,8 @@ class CommenceBoxingMatch
 	protected function calculatePlayersSkillPercentage($originatorSkill, $challengerSkill)
 	{
 		return [
-			100 / (($originatorSkill + $challengerSkill) / $originatorSkill),
-			100 / (($originatorSkill + $challengerSkill) / $challengerSkill),
+			($originatorSkill / ($originatorSkill + $challengerSkill)) * 100,
+			($challengerSkill / ($originatorSkill + $challengerSkill)) * 100,
 		];
 	}
 
