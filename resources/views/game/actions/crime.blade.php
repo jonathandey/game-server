@@ -6,17 +6,8 @@
         <div class="panel panel-default">
         	<div class="panel-heading">Street Crime</div>
         	<div class="panel-body">
-				@if (session('message'))
-					{!! session('message') !!}
-				@endif
-				@if (isset($timer))
-					<div class="alert alert-info text-center">
-						<p>You are recovering from you previous attempt...</p>
-						<div class="timer">
-							<strong class="countdown">{{ $timer }}</strong>
-						</div>
-					</div>
-				@endif
+        		@include('game.shared.messages')
+				@include('game.shared.timer', ['message' => 'You are recovering from you previous attempt...'])
 				<form action="/crimes" method="POST">
 					{{ csrf_field() }}
 					<ul class="list-unstyled">

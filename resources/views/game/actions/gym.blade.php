@@ -6,26 +6,8 @@
         <div class="panel panel-default">
         	<div class="panel-heading">Gymnasium</div>
         	<div class="panel-body">
-				@if (count($errors) > 0)
-				    <div class="alert alert-danger">
-				        <ul>
-				            @foreach ($errors->all() as $error)
-				                <li>{{ $error }}</li>
-				            @endforeach
-				        </ul>
-				    </div>
-				@endif
-				@if (session('message'))
-					{!! session('message') !!}
-				@endif
-				@if (isset($timer))
-					<div class="alert alert-info text-center">
-						<p>You are recovering from you previous session...</p>
-						<div class="timer">
-							<strong class="countdown">{{ $timer }}</strong>
-						</div>
-					</div>
-				@endif
+				@include('game.shared.messages')
+				@include('game.shared.timer', ['message' => 'You are recovering from you previous session...'])
 				<div class="row">
 					<div class="col-md-6">
 						<div class="panel panel-default">

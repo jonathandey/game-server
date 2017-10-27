@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Game;
 
 use App\BoxingMatch;
 use App\Game\Actions\Gym\Gym;
+use App\Http\Requests\GymTraining;
 use App\Game\Exceptions\TimerNotReadyException;
 
 class GymController extends ActionController
@@ -36,7 +37,7 @@ class GymController extends ActionController
 		return view($this->view, $attributes);
 	}
 
-	public function commit()
+	public function commit(GymTraining $request)
 	{
 		$workoutId = $this->request()->get('workout');
 		$workout = $this->game()->workouts()->find($workoutId);
