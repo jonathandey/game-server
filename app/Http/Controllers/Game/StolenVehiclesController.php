@@ -79,6 +79,7 @@ class StolenVehiclesController extends Controller
 		$vehiclesProcessed = $this->game()
 			->player()
 			->vehicles()
+			->where(StolenVehicle::ATTRIBUTE_GARAGED, StolenVehicle::PLAYER_GARAGED_NO)
 			->where(StolenVehicle::ATTRIBUTE_DROPPED, StolenVehicle::PLAYER_DROPPED_NO)
 			->whereIn('id', $vehicleIds)
 			->update([StolenVehicle::ATTRIBUTE_DROPPED => StolenVehicle::PLAYER_DROPPED_YES])
@@ -152,7 +153,6 @@ class StolenVehiclesController extends Controller
 			->player()
 			->vehicles()
 			->whereIn('id', $vehicleIds)
-			// ->update([StolenVehicle::ATTRIBUTE_DROPPED => StolenVehicle::PLAYER_DROPPED_YES])
 		;
 
 		$repairCosts = 0;
