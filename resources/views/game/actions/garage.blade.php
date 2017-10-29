@@ -6,13 +6,10 @@
         <div class="panel panel-default">
         	<div class="panel-heading">My Vehicles</div>
         	<div class="panel-body">
-				@if (session('message'))
-					<p>
-						<strong>{!! session('message') !!}</strong>
-					</p>
-				@endif
+				@include('game.shared.messages')
 				<form action="/vehicles" method="POST">
 					{{ csrf_field() }}
+					<p>Manage vehicles:</p>
 					<div class="btn-group" role="group" aria-label="Manage vehicles">
 						<input type="submit" name="drop" value="Drop" class="btn btn-default">
 						<input type="submit" name="sell" value="Sell" class="btn btn-default">
