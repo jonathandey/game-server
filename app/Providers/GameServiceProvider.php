@@ -25,69 +25,6 @@ class GameServiceProvider extends ServiceProvider
             return Game::instance();
         });
 
-        $this->app['App\Game\Game']->crimes([
-            [
-                'name' => 'Pick Pocket a Passerby',
-                'minPayout' => 10.0,
-                'maxPayout' => 30.0,
-                'difficulty' => .7,
-                'messages' => [
-                    'successful' => 'You successfully commited the crime.',
-                    'failed' => 'You were unsuccessful commiting this crime',
-                ],
-            ],
-            [
-                'name' => 'Steal from Betty\'s Clothing',
-                'minPayout' => 29.0,
-                'maxPayout' => 36.0,
-                'difficulty' => 2.6,
-                'messages' => [
-                    'successful' => 'You successfully commited the crime.',
-                    'failed' => 'You were unsuccessful commiting this crime',
-                ],
-            ],
-            [
-                'name' => 'Steal from Frank\'s Garage',
-                'minPayout' => 34.0,
-                'maxPayout' => 53.0,
-                'difficulty' => 4.8,
-                'messages' => [
-                    'successful' => 'You successfully commited the crime.',
-                    'failed' => 'You were unsuccessful commiting this crime',
-                ],
-            ],
-            [
-                'name' => 'Steal from Jimmy\'s Liquor Store',
-                'minPayout' => 55.0,
-                'maxPayout' => 72.0,
-                'difficulty' => 6.5,
-                'messages' => [
-                    'successful' => 'You successfully commited the crime.',
-                    'failed' => 'You were unsuccessful commiting this crime',
-                ],
-            ],
-            [
-                'name' => 'Steal from Young\'s Manufacturing',
-                'minPayout' => 80.0,
-                'maxPayout' => 110.0,
-                'difficulty' => 8,
-                'messages' => [
-                    'successful' => 'You successfully commited the crime.',
-                    'failed' => 'You were unsuccessful commiting this crime',
-                ],
-            ],
-            [
-                'name' => 'Rob the Jones Bank',
-                'minPayout' => 85.0,
-                'maxPayout' => 130.0,
-                'difficulty' => 12,
-                'messages' => [
-                    'successful' => 'You successfully commited the crime.',
-                    'failed' => 'You were unsuccessful commiting this crime',
-                ],
-            ],
-        ]);
-
         $this->app['App\Game\Game']->dice(new Dice);
 
         Blade::directive('timer', function ($expression) {

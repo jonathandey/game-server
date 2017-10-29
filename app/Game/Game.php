@@ -56,41 +56,9 @@ class Game
 		return $this;
 	}
 
-	public function crime(
-		$name, int $minPayout, int $maxPayout, float $difficulty, array $messages)
+	public function crimes()
 	{
-		$crime = (new Crime)->name($name)
-			->minPayout($minPayout)
-			->maxPayout($maxPayout)
-			->difficulty($difficulty)
-		;
-
-		if (isset($messages[Crime::MESSAGE_ATTRIBUTE_SUCCESSFUL])) {
-			$crime = $crime->successfulMessage($messages[Crime::MESSAGE_ATTRIBUTE_SUCCESSFUL]);
-		}
-
-		if (isset($messages[Crime::MESSAGE_ATTRIBUTE_FAILED])) {
-			$crime = $crime->failedMessage($messages[Crime::MESSAGE_ATTRIBUTE_FAILED]);
-		}
-
-		return $crime;
-	}
-
-	public function crimes(array $crimes = null)
-	{
-		if (is_null($crimes)) {
-			return $this->crimes;
-		}
-
-		foreach ($crimes as $crime) {
-			$this->crimes[] = $this->crime(
-				$crime['name'],
-				$crime['minPayout'],
-				$crime['maxPayout'],
-				$crime['difficulty'],
-				$crime['messages']
-			);
-		}
+		return Crime::get();
 	}
 
 	public function workouts()
