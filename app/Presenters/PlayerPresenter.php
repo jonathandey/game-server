@@ -38,4 +38,15 @@ class PlayerPresenter extends Presenter
 
 		return 'offline';
 	}
+
+	public function profileUrl()
+	{
+		return "/profile/user/{$this->player->getKey()}";
+	}
+
+	public function profileLink()
+	{
+		$username = e($this->player->name);
+		return "<a href='{$this->profileUrl()}'>{$username}</a>";
+	}
 }
