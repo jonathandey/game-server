@@ -4,6 +4,7 @@ namespace App\Game;
 
 use App\Timer;
 use Carbon\Carbon;
+use App\Game\Game;
 use App\BoxingMatch;
 use App\StolenVehicle;
 use App\PlayerAttribute;
@@ -146,6 +147,23 @@ class Player extends Authenticatable
 	{
 		$this->{self::ATTRIBUTE_LAST_ACTIVE_AT} = null;
 		$this->save();
+	}
+
+	public function wealthStatus()
+	{
+		$status = app(Game::class)->wealthStatuses()
+			->where('min', '<=', $this->{self::ATTRIBUTE_MONEY})
+			->where('max', '>=', $this->{self::ATTRIBUTE_MONEY})
+			->first()
+		;
+
+		dd($status);
+
+		if (! is_null($status)) {
+			return $status->name;
+		}
+
+		return 'Broke';
 	}
 
 	public function scopeOnline($query)
