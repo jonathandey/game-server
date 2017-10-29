@@ -8,7 +8,7 @@
 			<div class="panel-body">
 				<div class="online-users" style="padding: 10px 10px 30px">
 					@forelse ($onlineUsers as $user)
-						{{ $user->name }} 
+						{!! $user->presenter()->profileLink() !!}
 						(<em>{{$user->presenter()->presence()}}</em>)
 						@if(! $loop->last) - @endif
 					@empty

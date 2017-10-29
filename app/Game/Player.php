@@ -38,6 +38,10 @@ class Player extends Authenticatable
 
 	protected $presenter = PlayerPresenter::class;
 
+	protected $appends = [
+		'wealthStatus',
+	];
+
 	public function commit(Actionable $action)
 	{
 		if (! $this->canAttempt($action)) {
@@ -149,7 +153,7 @@ class Player extends Authenticatable
 		$this->save();
 	}
 
-	public function wealthStatus()
+	public function getWealthStatusAttribute()
 	{
 		$status = app(Game::class)->wealthStatuses()
 			->where('min', '<=', $this->{self::ATTRIBUTE_MONEY})
@@ -157,10 +161,8 @@ class Player extends Authenticatable
 			->first()
 		;
 
-		dd($status);
-
 		if (! is_null($status)) {
-			return $status->name;
+			return $status['name'];
 		}
 
 		return 'Broke';
