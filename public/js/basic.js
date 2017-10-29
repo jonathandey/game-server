@@ -11,6 +11,7 @@ var Countdown = function(hour, minute, second, cb) {
 }
 
 Countdown.prototype.startCountdown = function() {
+	this.cb(this);
 	this.interval = setInterval($.proxy(this.count, this), 1000);
 }
 
