@@ -32,7 +32,7 @@ class StolenVehiclesController extends Controller
 			->player()
 			->vehicles()
 			->orderBy('created_at', 'DESC')
-			->get()
+			->paginate(15)
 		;
 
 		return view('game.actions.garage', compact('stolenVehicles'));

@@ -62,4 +62,15 @@ $(function() {
 			$this.text(text)
 		});
 	});
+
+	$('.selectAllSelected').on('click', function() {
+		var $this = $(this),
+			$thisIsChecked = $this.is(':checked');
+
+		if ($thisIsChecked) {
+			return $('input[name="selected[]"]').attr('checked', 'checked');
+		}
+
+		return $('input[name="selected[]"]').removeAttr('checked');
+	});
 });

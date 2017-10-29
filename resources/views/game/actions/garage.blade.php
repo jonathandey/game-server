@@ -21,7 +21,9 @@
 					<div class="table-responsive" style="max-height: 900px">
 						<table class="table table-striped table-bordered table-hover">
 							<tr>
-								<th></th>
+								<th>
+									<input type="checkbox" class="selectAllSelected">
+								</th>
 								<th>Type</th>
 								<th>Damage</th>
 								<th>Value</th>
@@ -58,6 +60,11 @@
 				</form>
 			</div>
 		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-9 col-md-offset-1">
+		{{ $stolenVehicles->links() }}
 	</div>
 </div>
 @endsection

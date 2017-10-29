@@ -21,7 +21,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-9 col-md-offset-1">
 		{{ $notifications->links() }}
 	</div>
 </div>
