@@ -77,7 +77,6 @@ class CommenceBoxingMatch
 			// Players are at equal chance.
 			if ($this->originator->boxingSkillPercentage
 				 == $this->challenger->boxingSkillPercentage) {
-				dd('equal');
 				$roll = round($this->game->dice()->roll(1, 2));
 
 				$winner = $this->originator;
