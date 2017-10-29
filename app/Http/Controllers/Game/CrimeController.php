@@ -15,7 +15,7 @@ class CrimeController extends ActionController
 	public function commit(CommitCrime $request)
 	{
 		$crimeId = $this->request()->get('crime');
-		$crime = $this->game()->crimes()[$crimeId];
+		$crime = $this->game()->crimes()->find($crimeId);
 
 		try {
 			$this->game()->player()->commit($crime);

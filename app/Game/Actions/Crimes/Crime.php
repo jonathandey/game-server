@@ -16,6 +16,14 @@ class Crime extends Action implements Actionable, TimerRestricted
 {
 	use Presentable, HasTimer;
 
+	const ATTRIBUTE_NAME = 'name';
+
+	const ATTRIBUTE_MONETARY_MIN = 'monetary_min';
+
+	const ATTRIBUTE_MONETARY_MAX = 'monetary_max';
+
+	const ATTRIBUTE_DIFFICULTY = 'difficulty';
+
 	const TIMER_DURATION = 60;
 
 	const SKILL_SUCCESSFUL_INCREMENT_LOW = 0.02;
@@ -26,58 +34,26 @@ class Crime extends Action implements Actionable, TimerRestricted
 
 	const SKILL_FAILED_INCREMENT_HIGH = 0.05;
 
-	protected $name = null;
-
-	protected $minPayout = 0;
-
-	protected $maxPayout = 1;
-
-	protected $difficulty = 10.0;
-
 	protected $presenter = CrimePresenter::class;
 
 	public function name($name = null)
 	{
-		if (is_null($name)) {
-			return $this->name;
-		}
-
-		$this->name = $name;
-
-		return $this;
+		return $this->{self::ATTRIBUTE_NAME};
 	}
 
 	public function minPayout(int $minPayout = null)
 	{
-		if (is_null($minPayout)) {
-			return $this->minPayout;
-		}
-
-		$this->minPayout = $minPayout;
-
-		return $this;
+		return $this->{self::ATTRIBUTE_MONETARY_MIN};
 	}
 
 	public function maxPayout(int $maxPayout = null)
 	{
-		if (is_null($maxPayout)) {
-			return $this->maxPayout;
-		}
-
-		$this->maxPayout = $maxPayout;
-
-		return $this;
+		return $this->{self::ATTRIBUTE_MONETARY_MAX};
 	}
 
 	public function difficulty(float $difficulty = null)
 	{
-		if (is_null($difficulty)) {
-			return $this->difficulty;
-		}
-
-		$this->difficulty = $difficulty;
-
-		return $this;
+		return $this->{self::ATTRIBUTE_DIFFICULTY};
 	}
 
 	public function attempt()
@@ -115,11 +91,6 @@ class Crime extends Action implements Actionable, TimerRestricted
 	public function getTimerDuration()
 	{
 		return self::TIMER_DURATION;
-	}
-
-	public function getSkillAdjustableKey()
-	{
-		return 'crime_random_adjustment';
 	}
 
 	public function percentage()

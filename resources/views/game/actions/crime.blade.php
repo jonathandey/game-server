@@ -14,11 +14,11 @@
 						@foreach ($actions as $crime)
 							<li>
 								<div class="radio">
-									<label for="crime-{{ $loop->index }}">
+									<label for="crime-{{ $crime->getKey() }}">
 										<input type="radio" 
 											name="crime" 
-											value="{{ $loop->index }}" 
-											id="crime-{{ $loop->index }}">
+											value="{{ $crime->getKey() }}" 
+											id="crime-{{ $crime->getKey() }}">
 										{{ $crime->name() }} ({{ $crime->percentage() }}%)
 									</label>
 								</div>

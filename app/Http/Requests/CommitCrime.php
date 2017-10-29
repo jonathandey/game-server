@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
+use App\Game\Actions\Crimes\Crime;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CommitCrime extends FormRequest
@@ -23,8 +25,13 @@ class CommitCrime extends FormRequest
      */
     public function rules()
     {
+        $crimes = Crime::pluck(
+            (new Crime)->getKeyName()
+        )
+        ->toArray();
+
         return [
-            'crime' => 'required',
+            'crime' => ['required', Rule::in($crimes)],
         ];
     }
 

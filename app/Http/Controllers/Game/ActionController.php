@@ -37,7 +37,7 @@ abstract class ActionController extends Controller
 	    	)
     	);
 
-    	return $this->game()->{$actionMethod}();
+    	return $this->game()->{$actionMethod}()->sortBy('difficulty', SORT_REGULAR, true);
     }
 
     protected function timer()
