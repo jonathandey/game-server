@@ -25,6 +25,8 @@ class Game
 
 	protected $vehicles = [];
 
+	protected $wealthStatuses = [];
+
 	protected $dice = null;
 
 	protected static $instance = null;
@@ -84,6 +86,17 @@ class Game
 	public function usersOnline()
 	{
 		return User::online()->get();
+	}
+
+	public function wealthStatuses(array $wealthStatuses = null)
+	{
+		if (is_null($wealthStatuses)) {
+			return collect($this->wealthStatuses);
+		}
+
+		$this->wealthStatuses = $wealthStatuses;
+
+		return $this;
 	}
 
 	public function rewardPlayer(Collection $rewards = null, Player $player)
