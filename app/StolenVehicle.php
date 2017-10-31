@@ -20,6 +20,10 @@ class StolenVehicle extends Model
 
 	const ATTRIBUTE_GARAGED = 'garaged';
 
+    const ATTRIBUTE_ORIGIN_LOCATION_ID = 'origin_location';
+
+    const ATTRIBUTE_LOCATION_ID = 'location';
+
 	const PLAYER_SOLD_YES = 1;
 
 	const PLAYER_SOLD_NO = 0;
@@ -83,5 +87,15 @@ class StolenVehicle extends Model
     public function isGaraged()
     {
         return $this->garaged;
+    }
+
+    public function stolenFrom()
+    {
+        return $this->belongsTo(Location::class, self::ATTRIBUTE_ORIGIN_LOCATION_ID);
+    }
+
+    public function parkedAt()
+    {
+        return $this->belongsTo(Location::class, self::ATTRIBUTE_LOCATION_ID);
     }
 }

@@ -3,17 +3,20 @@
 namespace App\Game;
 
 use App\User;
+use App\Location;
 use App\Game\Player;
 use App\Game\Items\Item;
 use App\Game\Actions\Gym\Gym;
-use App\Game\Items\Vehicles\Vehicle;
+use App\Game\Actions\Travel\Train;
 use Illuminate\Support\Collection;
 use App\Game\Actions\Crimes\Crime;
-use App\Game\Outcomes\CrimeSkillIncrement;
-use App\Game\Outcomes\Gym\SkillIncrement as GymSkillIncrement;
+use App\Game\Items\Vehicles\Vehicle;
 use App\Game\Actions\Crimes\AutoBurglary;
+use App\Game\Outcomes\CrimeSkillIncrement;
+use App\Game\Outcomes\Travel\TravelDestination;
 use App\Game\Outcomes\Rewards\Money as MoneyReward;
 use App\Game\Outcomes\Rewards\Items\Item as ItemReward;
+use App\Game\Outcomes\Gym\SkillIncrement as GymSkillIncrement;
 
 class Game
 {
@@ -27,7 +30,11 @@ class Game
 
 	protected $wealthStatuses = [];
 
+	protected $locationDistances = [];
+
 	protected $dice = null;
+
+	protected $train = null;
 
 	protected static $instance = null;
 
@@ -58,6 +65,11 @@ class Game
 		return $this;
 	}
 
+	public function locations()
+	{
+		return Location::get();
+	}
+
 	public function crimes()
 	{
 		return Crime::get();
@@ -78,9 +90,22 @@ class Game
 		return Vehicle::get();
 	}
 
+	public function train()
+	{
+		if (! is_null($this->train)) {
+			return $this->train;
+		}
+
+		return $this->train = (new Train)->startingLocation(
+			$this->player()->location
+		);
+	}
+
 	public function player()
 	{
-		return request()->user()->load(['attribute', 'timer']);
+		return request()->user()->load([
+			'attribute', 'timer', 'location',
+		]);
 	}
 
 	public function usersOnline()
@@ -95,6 +120,17 @@ class Game
 		}
 
 		$this->wealthStatuses = $wealthStatuses;
+
+		return $this;
+	}	
+
+	public function travelDestinations(array $travelDestinations = null)
+	{
+		if (is_null($travelDestinations)) {
+			return collect($this->travelDestinations);
+		}
+
+		$this->travelDestinations = $travelDestinations;
 
 		return $this;
 	}
@@ -128,6 +164,12 @@ class Game
 
 			if ($reward instanceof ItemReward) {
 				$player->give(
+					$value
+				);
+			}
+
+			if ($reward instanceof TravelDestination) {
+				$player->goTo(
 					$value
 				);
 			}

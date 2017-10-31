@@ -31,6 +31,7 @@ class StolenVehiclesController extends Controller
 		$stolenVehicles = $this->game()
 			->player()
 			->vehicles()
+			->with(['stolenFrom', 'parkedAt'])
 			->orderBy('created_at', 'DESC')
 			->paginate(15)
 		;

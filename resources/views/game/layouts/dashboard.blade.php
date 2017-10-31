@@ -61,6 +61,11 @@
                         </li>
                         <li>
                             <a>
+                                <strong>Location:</strong> {{ $game->player()->presenter()->location() }}
+                            </a>
+                        </li>
+                        <li>
+                            <a>
                             	<strong>Crime Skill:</strong> {{ $game->player()->attribute->crime_skill }}
                             </a>
                         </li>
@@ -136,6 +141,14 @@
                                     <strong>Gym</strong> 
                                     <span class="countdown">
                                         @timer($game->player()->timer->for('gym'))
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/travel" class="timer">
+                                    <strong>Train</strong> 
+                                    <span class="countdown">
+                                        @timer($game->player()->timer->for('train'))
                                     </span>
                                 </a>
                             </li>

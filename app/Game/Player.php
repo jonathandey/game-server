@@ -3,6 +3,7 @@
 namespace App\Game;
 
 use App\Timer;
+use App\Location;
 use Carbon\Carbon;
 use App\Game\Game;
 use App\BoxingMatch;
@@ -26,6 +27,8 @@ class Player extends Authenticatable
 
 	const ATTRIBUTE_LAST_ACTIVE_AT = 'last_active_at';
 
+	const ATTRIBUTE_LOCATION_ID = 'location_id';
+
 	const PRESENCE_STATUS_OFFLINE = 0;
 
 	const PRESENCE_STATUS_ONLINE = 1;
@@ -44,7 +47,7 @@ class Player extends Authenticatable
 
 	public function commit(Actionable $action)
 	{
-		if (! $this->canAttempt($action)) {
+		if (! $this->canCommit($action)) {
 			$timer = $this->timer->for(
 				$action->getTimerName()
 			);
@@ -69,7 +72,14 @@ class Player extends Authenticatable
 		return true;
 	}
 
-	public function canAttempt($action)
+	public function goTo($location)
+	{
+		if ($location instanceof Location) {
+			$location->players()->save($this);
+		}
+	}
+
+	public function canCommit($action)
 	{
 		if ($action instanceof TimerRestricted) {
 			$timer = $this->timer->for(
@@ -99,23 +109,39 @@ class Player extends Authenticatable
 
 	public function tryToTakeMoney($value)
 	{
-		if ($this->{self::ATTRIBUTE_MONEY} < $value) {
+		if ($this->canAfford($value)) {
 			throw new NotEnoughMoneyException;
 		}
 
 		$this->takeMoney($value);
 	}
 
+	public function canAfford($value)
+	{
+		return $this->{self::ATTRIBUTE_MONEY} < $value;
+	}
+
+	public function ifCanCommitTryToTakeMoney(Actionable $action, $value)
+	{
+		if ($this->canCommit($action)) {
+			return $this->tryToTakeMoney($value);
+		}
+
+		return false;
+	}
+
 	public function give($item)
 	{
 		if ($item instanceof StolenVehicle) {
+			$item->{StolenVehicle::ATTRIBUTE_ORIGIN_LOCATION_ID} = $this->{self::ATTRIBUTE_LOCATION_ID};
+			$item->{StolenVehicle::ATTRIBUTE_LOCATION_ID} = $this->{self::ATTRIBUTE_LOCATION_ID};
 			$this->vehicles()->save($item);
 		}
 	}
 
-	public function goTo()
+	public function location()
 	{
-
+		return $this->belongsTo(Location::class);
 	}
 
 	public function vehicles()

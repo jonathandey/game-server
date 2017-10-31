@@ -15,8 +15,6 @@ class GymController extends ActionController
 
 	public function index()
 	{
-		$timer = $this->timer();
-
 		$boxingMatches = BoxingMatch::active()
 			->orderBy(BoxingMatch::ATTRIBUTE_MONETARY_STAKE, 'desc')
 			->get()
@@ -30,9 +28,7 @@ class GymController extends ActionController
 			'fights' => $boxingMatches,
 		];
 
-		if (! is_null($timer) && ! $timer->isReady()) {
-			$attributes['timer'] = $timer->diffNow();
-		}
+		$attributes['timer'] = $this->timerAttribute();
 
 		return view($this->view, $attributes);
 	}
