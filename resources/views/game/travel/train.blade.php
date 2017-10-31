@@ -7,7 +7,7 @@
 		@include('game.shared.timer', ['message' => 'The next train is due in...'])
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				Travel
+				Train Station
 			</div>
 			<div class="panel-body">
 				<form action="/travel" method="POST">

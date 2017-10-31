@@ -144,6 +144,14 @@
                                     </span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="/travel" class="timer">
+                                    <strong>Train</strong> 
+                                    <span class="countdown">
+                                        @timer($game->player()->timer->for('train'))
+                                    </span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
