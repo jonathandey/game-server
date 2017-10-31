@@ -108,7 +108,7 @@ class GameServiceProvider extends ServiceProvider
             [
                 'from' => 3,
                 'to' => 2,
-                'distance' => 2,
+                'distance' => 1,
             ],
             [
                 'from' => 3,
@@ -129,7 +129,7 @@ class GameServiceProvider extends ServiceProvider
             [
                 'from' => 4,
                 'to' => 2,
-                'distance' => 6,
+                'distance' => 5,
             ],
             [
                 'from' => 4,

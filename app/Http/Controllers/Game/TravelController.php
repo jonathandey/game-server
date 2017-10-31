@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Game;
 
 use App\Http\Requests\Travel;
 use App\Game\Actions\Travel\Train;
+use App\Game\Exceptions\TimerNotReadyException;
 use App\Game\Exceptions\NotEnoughMoneyException;
 
 class TravelController extends ActionController
