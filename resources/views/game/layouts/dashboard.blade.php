@@ -61,6 +61,11 @@
                         </li>
                         <li>
                             <a>
+                                <strong>Location:</strong> {{ $game->player()->presenter()->location() }}
+                            </a>
+                        </li>
+                        <li>
+                            <a>
                             	<strong>Crime Skill:</strong> {{ $game->player()->attribute->crime_skill }}
                             </a>
                         </li>

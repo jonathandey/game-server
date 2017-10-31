@@ -31,6 +31,9 @@ Route::post('/gym/fight/match', 'Game\BoxingController@fight');
 
 Route::get('/profile/user/{id}', 'Game\UserProfileController@index');
 
+Route::get('/travel', 'Game\TravelController@index');
+Route::post('/travel', 'Game\TravelController@travel');
+
 Route::get('/notifications', 'Game\NotificationsController@index');
 Route::get('/usersonline', 'Game\UsersOnlineController@index');
 

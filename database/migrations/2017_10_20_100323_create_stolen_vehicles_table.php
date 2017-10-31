@@ -1,5 +1,6 @@
 <?php
 
+use App\StolenVehicle;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -18,8 +19,8 @@ class CreateStolenVehiclesTable extends Migration
             $table->unsignedInteger('vehicle_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('damage')->default(50);
-            $table->unsignedInteger('origin_location')->default(0);
-            $table->unsignedInteger('location')->default(0);
+            $table->unsignedInteger(StolenVehicle::ATTRIBUTE_ORIGIN_LOCATION_ID)->default(0);
+            $table->unsignedInteger(StolenVehicle::ATTRIBUTE_LOCATION_ID)->default(0);
             $table->boolean('dropped')->default(false);
             $table->boolean('sold')->default(false);
             $table->boolean('garaged')->default(false);

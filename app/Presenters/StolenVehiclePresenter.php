@@ -41,4 +41,14 @@ class StolenVehiclePresenter extends Presenter
 			$this->stolenVehicle->value()
 		);
 	}
+
+	public function stolenFrom()
+	{
+		return $this->stolenVehicle->stolenFrom->name;
+	}
+
+	public function parkedAt()
+	{
+		return $this->stolenVehicle->parkedAt->name;
+	}
 }

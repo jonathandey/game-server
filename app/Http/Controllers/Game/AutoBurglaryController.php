@@ -15,7 +15,10 @@ class AutoBurglaryController extends ActionController
 	public function commit(CommitAutoBurglary $request)
 	{
 		$autoburglaryId = $this->request()->get('autoBurglary');
-		$autoburglary = $this->game()->autoBurglaries()->find($autoburglaryId);
+		$autoburglary = $this->game()
+			->autoBurglaries()
+			->find($autoburglaryId)
+		;
 
 		try {
 			$this->game()->player()->commit($autoburglary);

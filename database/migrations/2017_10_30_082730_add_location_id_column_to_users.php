@@ -1,11 +1,11 @@
 <?php
 
-use App\Game\Player;
+use App\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPlayerAttributesToUser extends Migration
+class AddLocationIdColumnToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -15,9 +15,7 @@ class AddPlayerAttributesToUser extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
-            $table->unsignedInteger(Player::ATTRIBUTE_MONEY)->default(0);
-            $table->float('skill')->default(0);
+            $table->unsignedInteger(User::ATTRIBUTE_LOCATION_ID)->default(0);
         });
     }
 
@@ -29,8 +27,7 @@ class AddPlayerAttributesToUser extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
-            $table->dropColumn(Player::ATTRIBUTE_MONEY, 'skill');
+            $table->dropColumn(User::ATTRIBUTE_LOCATION_ID);
         });
     }
 }
