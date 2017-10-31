@@ -25,6 +25,122 @@ class GameServiceProvider extends ServiceProvider
             return Game::instance();
         });
 
+        $this->setWealthStatuses();
+
+        $this->setTravelDestinations();
+
+        $this->registerDice();
+
+        $this->extendBlade();
+    }
+
+    /**
+     * Register the application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    protected function registerDice()
+    {
+        $this->app['App\Game\Game']->dice(new Dice);
+    }
+
+    protected function setTravelDestinations()
+    {
+        $this->app['App\Game\Game']->travelDestinations([
+            // From NJ to X
+            [
+                'from' => 1,
+                'to' => 1,
+                'distance' => 0,
+            ],
+            [
+                'from' => 1,
+                'to' => 2,
+                'distance' => 1,
+            ],
+            [
+                'from' => 1,
+                'to' => 3,
+                'distance' => 2,
+            ],
+            [
+                'from' => 1,
+                'to' => 4,
+                'distance' => 6,
+            ],
+            // From New York to X
+            [
+                'from' => 2,
+                'to' => 2,
+                'distance' => 0,
+            ],
+            [
+                'from' => 2,
+                'to' => 1,
+                'distance' => 1,
+            ],
+            [
+                'from' => 2,
+                'to' => 3,
+                'distance' => 2,
+            ],
+            [
+                'from' => 2,
+                'to' => 4,
+                'distance' => 6,
+            ],
+            // From Illinois to X
+            [
+                'from' => 3,
+                'to' => 3,
+                'distance' => 0,
+            ],
+            [
+                'from' => 3,
+                'to' => 1,
+                'distance' => 2,
+            ],
+            [
+                'from' => 3,
+                'to' => 2,
+                'distance' => 1,
+            ],
+            [
+                'from' => 3,
+                'to' => 4,
+                'distance' => 4,
+            ],
+            // From Cali to X
+            [
+                'from' => 4,
+                'to' => 4,
+                'distance' => 0,
+            ],
+            [
+                'from' => 4,
+                'to' => 1,
+                'distance' => 6,
+            ],
+            [
+                'from' => 4,
+                'to' => 2,
+                'distance' => 5,
+            ],
+            [
+                'from' => 4,
+                'to' => 3,
+                'distance' => 4,
+            ],
+        ]);
+    }
+
+    protected function setWealthStatuses()
+    {
         $this->app['App\Game\Game']->wealthStatuses([
             [
                 'name' => 'Poor',
@@ -82,9 +198,10 @@ class GameServiceProvider extends ServiceProvider
                 'max' => 999999999999,
             ],
         ]);
+    }
 
-        $this->app['App\Game\Game']->dice(new Dice);
-
+    protected function extendBlade()
+    {
         Blade::directive('timer', function ($expression) {
             return "<?php echo (new \App\Game\Helpers\Timer($expression))->diffNow(); ?>";
         });
@@ -92,15 +209,5 @@ class GameServiceProvider extends ServiceProvider
         Blade::directive('money', function ($expression) {
             return "<?php echo (new App\Game\Helpers\Money)->numberFormatWithSymbol($expression); ?>";
         });
-    }
-
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 }

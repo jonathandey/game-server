@@ -33,6 +33,9 @@
 						<li>
 							<a class="btn btn-plain" href="/home">Store</a>
 						</li>
+						<li>
+							<a class="btn btn-plain" href="/travel">Train Station</a>
+						</li>
 					</ul>
             	</div>
             </div>

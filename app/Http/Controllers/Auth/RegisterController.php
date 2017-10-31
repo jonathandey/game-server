@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Timer;
+use App\Location;
 use App\PlayerAttribute;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -81,7 +82,10 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
+        $location = Location::get()->shuffle()->first();
+
         $user->{User::ATTRIBUTE_MONEY} = 500;
+        $user->{User::ATTRIBUTE_LOCATION_ID} = $location->getKey();
         $user->save();
 
         $user->timer()->save(new Timer);

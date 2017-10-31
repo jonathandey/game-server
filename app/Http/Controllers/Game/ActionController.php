@@ -56,4 +56,15 @@ abstract class ActionController extends Controller
 
 		return null;
     }
+
+    protected function timerAttribute()
+    {
+    	$timer = $this->timer();
+
+		if (! is_null($timer) && ! $timer->isReady()) {
+			return $timer->diffNow();
+		}
+
+		return null;
+    }
 }

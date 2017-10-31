@@ -26,6 +26,11 @@ class PlayerPresenter extends Presenter
 		);
 	}
 
+	public function location()
+	{
+		return $this->player->location->name;
+	}
+
 	public function presence()
 	{
 		if ($this->player->presenceStatus() == Player::PRESENCE_STATUS_IDLE) {

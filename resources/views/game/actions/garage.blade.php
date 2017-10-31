@@ -27,6 +27,8 @@
 								<th>Type</th>
 								<th>Damage</th>
 								<th>Value</th>
+								<th>Origin</th>
+								<th>Location</th>
 							</tr>
 							@forelse($stolenVehicles as $stolenVehicle)
 								<tr class="@if ($stolenVehicle->isGaraged()) success @endif">
@@ -46,6 +48,12 @@
 									</td>
 									<td>
 										{{ $stolenVehicle->presenter()->valueWithSymbol() }}
+									</td>
+									<td>
+										{{ $stolenVehicle->presenter()->stolenFrom() }}
+									</td>
+									<td>
+										{{ $stolenVehicle->presenter()->parkedAt() }}
 									</td>
 								</tr>
 							@empty
