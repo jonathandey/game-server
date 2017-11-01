@@ -11,17 +11,11 @@ abstract class ActionController extends Controller
 
 	public function index()
 	{
-		$timer = $this->timer();
-
-		$attributes = [
-			'actions' => $this->getActions(),
-		];
-
-		if (! is_null($timer) && ! $timer->isReady()) {
-			$attributes['timer'] = $timer->diffNow();
-		}
-
-		return view($this->view, $attributes);
+		return $this->withTimer()
+			->withActions()
+			->response()
+			->view($this->view)
+		;
 	}
 
     protected function action()
@@ -66,5 +60,23 @@ abstract class ActionController extends Controller
 		}
 
 		return null;
+    }
+
+    protected function withTimer()
+    {
+    	$this->response()->includeAttributes([
+    		'timer' => $this->timerAttribute(),
+    	]);
+
+    	return $this;
+    }
+
+    protected function withActions()
+    {
+    	$this->response()->includeAttributes([
+    		'actions' => $this->getActions(),
+    	]);
+
+    	return $this;
     }
 }

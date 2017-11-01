@@ -22,11 +22,13 @@ class AutoBurglaryController extends ActionController
 
 		try {
 			$this->game()->player()->commit($autoburglary);
-			$message = $autoburglary->presenter()->outcomeMessage();
+			$this->message(
+				$autoburglary->presenter()->outcomeMessage()
+			);
 		} catch (TimerNotReadyException $e) {
 
 		}
 		
-		return redirect()->back()->with(compact('message'));
+		return $this->response()->redirectBackWithMessage($this->message());
 	}
 }

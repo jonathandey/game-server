@@ -8,9 +8,9 @@ class UsersOnlineController extends Controller
 {
 	public function index()
 	{
-		// shuffle
-		$onlineUsers = app(\App\Game\Game::class)->usersOnline();
+		// Todo: shuffle
+		$onlineUsers = app(Game::class)->usersOnline();
 
-		return view('game.information.users_online', compact('onlineUsers'));
+		return $this->response()->view('game.information.users_online', compact('onlineUsers'));
 	}
 }

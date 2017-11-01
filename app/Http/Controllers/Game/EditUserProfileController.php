@@ -12,7 +12,7 @@ class EditUserProfileController extends Controller
 	{
 		$player = $this->player();
 
-		return view('game.user.profile', compact('player'));
+		return $this->response()->view('game.user.profile', compact('player'));
 	}
 
 	public function updateQuote(UpdateProfileQuote $request)
@@ -23,11 +23,13 @@ class EditUserProfileController extends Controller
 		$this->player()->save();
 
 		$profileUrl = $this->player()->presenter()->profileUrl();
-		$message = $this->basicPresenter()->htmlSuccessMessage(
-			"Your profile quote has been updated. <a href='{$profileUrl}'>View it now</a>"
+		$this->message(
+			$this->basicPresenter()->htmlSuccessMessage(
+				"Your profile quote has been updated. <a href='{$profileUrl}'>View it now</a>"
+			)
 		);
 
-		return $this->response()->redirectBackWithMessage($message);
+		return $this->response()->redirectBackWithMessage($this->message());
 	}
 
 	public function updatePassword(UpdateAccountPassword $request)
@@ -35,11 +37,13 @@ class EditUserProfileController extends Controller
 		$currentPassword = $this->request()->get('current_password');
 
 		if (! Hash::check($currentPassword, $this->player()->password)) {
-			$message = $this->basicPresenter()->htmlErrorMessage(
-				'Your current password is incorrect'
+			$this->message(
+				$this->basicPresenter()->htmlErrorMessage(
+					'Your current password is incorrect'
+				)
 			);
 
-			return $this->response()->redirectBackWithMessage($message);
+			return $this->response()->redirectBackWithMessage($this->message());
 		}
 
 		$newPassword = Hash::make(
@@ -49,10 +53,12 @@ class EditUserProfileController extends Controller
 		$this->player()->password = $newPassword;
 		$this->player()->save();
 
-		$message = $this->basicPresenter()->htmlSuccessMessage(
-			'Your password has been updated'
+		$this->message(
+			$this->basicPresenter()->htmlSuccessMessage(
+				'Your password has been updated'
+			)
 		);
 
-		return $this->response()->redirectBackWithMessage($message);
+		return $this->response()->redirectBackWithMessage($this->message());
 	}
 } 

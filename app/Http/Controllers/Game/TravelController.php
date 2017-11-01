@@ -16,9 +16,11 @@ class TravelController extends ActionController
 	public function index()
 	{
 		$destinations = $this->getTrain()->destinations();
-		$timer = $this->timerAttribute();
 
-		return view('game.travel.train', compact('destinations', 'timer'));
+		return $this->withTimer()
+			->response()
+			->view('game.travel.train', compact('destinations'))
+		;
 	}
 
 	public function travel(Travel $request)
@@ -40,14 +42,18 @@ class TravelController extends ActionController
 
 			$player->commit($this->getTrain());
 
-			$message = $train->presenter()->outcomeMessage();
+			$this->message(
+				$train->presenter()->outcomeMessage()
+			);
 		} catch(NotEnoughMoneyException $e) {
-			$message = $train->presenter()->htmlErrorMessage($e->getMessage());
+			$this->message(
+				$train->presenter()->htmlErrorMessage($e->getMessage())
+			);
 		} catch (TimerNotReadyException $e) {
 
 		}
 		
-		return redirect()->back()->with(compact('message'));
+		return $this->response()->redirectBackWithMessage($this->message());
 	}
 
 	protected function getTrain()

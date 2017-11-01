@@ -19,11 +19,13 @@ class CrimeController extends ActionController
 
 		try {
 			$this->game()->player()->commit($crime);
-			$message = $crime->presenter()->outcomeMessage();
+			$this->message(
+				$crime->presenter()->outcomeMessage()
+			);
 		} catch (TimerNotReadyException $e) {
 
 		}
 		
-		return redirect()->back()->with(compact('message'));
+		return $this->response()->redirectBackWithMessage($this->message());
 	}
 }

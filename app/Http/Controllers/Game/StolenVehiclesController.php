@@ -36,7 +36,7 @@ class StolenVehiclesController extends Controller
 			->paginate(15)
 		;
 
-		return view('game.actions.garage', compact('stolenVehicles'));
+		return $this->response()->view('game.actions.garage', compact('stolenVehicles'));
 	}
 
 	public function manage(ManageVehicles $request)
@@ -69,16 +69,21 @@ class StolenVehiclesController extends Controller
 			try {
 				$countProccessedVehicles = $this->repairVehicles();
 			} catch (NotEnoughMoneyException $e) {
-				$message = $e->getMessage();
-				return redirect()->back()->with(compact('message'));	
+				$this->message(
+					$e->getMessage()
+				);
+
+				return $this->response()->redirectBackWithMessage($this->message());
 			}
 		}
 
-		$message = $this->model()->presenter()->htmlInfoMessage(
-			"{$countProccessedVehicles} out of {$countSelectedVehicles} vehicles have been processed"
+		$this->message(
+			$this->model()->presenter()->htmlInfoMessage(
+				"{$countProccessedVehicles} out of {$countSelectedVehicles} vehicles have been processed"
+			)
 		);
 
-		return redirect()->back()->with(compact('message'));
+		return $this->response()->redirectBackWithMessage($this->message());
 	}
 
 	protected function dropVehicles()

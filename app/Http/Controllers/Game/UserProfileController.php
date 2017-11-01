@@ -14,6 +14,6 @@ class UserProfileController extends Controller
 			return "user not found";
 		}
 
-		return view('game.profile.user', compact('user'));
+		return $this->response()->view('game.profile.user', compact('user'));
 	}
 }

@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller as BaseController;
 
 abstract class Controller extends BaseController
 {
-	protected $request, $game, $player;
+	protected $request, $response, $game, $player, $message;
 
 	/**
      * Create a new controller instance.
@@ -20,7 +20,20 @@ abstract class Controller extends BaseController
     public function __construct()
     {
         $this->middleware(['auth', 'user.lastActive']);
+
+        $this->message = null;
     }
+
+	public function message($message = null)
+	{
+		if (! is_null($this->message)) {
+			return $this->message;
+		}
+
+		$this->message = $message;
+
+		return $this;
+	}
 
 	public function request()
 	{
@@ -51,7 +64,11 @@ abstract class Controller extends BaseController
 
 	public function response()
 	{
-		return resolve(Response::class);
+		if (! is_null($this->response)) {
+			return $this->response;
+		}
+
+		return $this->response = resolve(Response::class);
 	}
 
 	public function basicPresenter()
