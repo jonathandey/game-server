@@ -13,7 +13,16 @@ use App\Game\Exceptions\NotEnoughMoneyException;
 
 class BoxingController extends Controller
 {
-	protected $invalidFightMessage = "<div class='alert alert-danger'>Invalid fight!</div>";
+	protected $invalidFightMessage = null;
+
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->invalidFightMessage = $this->basicPresenter()->htmlErrorMessage(
+			'Invalid fight!'
+		);
+	}
 
 	public function create(PostFight $request)
 	{
@@ -25,13 +34,17 @@ class BoxingController extends Controller
 			$boxingMatch = new BoxingMatch($attributes);
 			$this->player()->boxingMatches()->save($boxingMatch);
 
-			$message = "<div class='alert alert-success'>Your fight has been posted.</div>";
-			return redirect()->back()->with(compact('message'));
+			$this->message(
+				$this->basicPresenter()->htmlSuccessMessage("Your fight has been posted")
+			);
 
 		} catch (NotEnoughMoneyException $e) {
-			$message = "<div class='alert alert-danger'>You don't have that kind of money!</div>";
-			return redirect()->back()->with(compact('message'));
+			$this->message(
+				$this->basicPresenter()->htmlErrorMessage("You don't have that kind of money!")
+			);
 		}
+
+		return $this->response()->redirectBackWithMessage($this->message());
 	}
 
 	public function fight()
@@ -52,8 +65,11 @@ class BoxingController extends Controller
 	protected function attemptFight(BoxingMatch $boxingMatch)
 	{
 		if ($boxingMatch->originator->getKey() == $this->player()->getKey()) {
-			$message = $this->invalidFightMessage;
-			return redirect()->back()->with(compact('message'));
+			$this->message(
+				$this->invalidFightMessage
+			);
+
+			return $this->response()->redirectBackWithMessage($this->message());
 		}
 
 		try {
@@ -68,8 +84,13 @@ class BoxingController extends Controller
 
 			$boxingMatch->save();
 		} catch(NotEnoughMoneyException $e) {
-			$message = "<div class='alert alert-danger'>You do not have enough money to challenge this fighter</div>";
-			return redirect()->back()->with(compact('message'));
+			$this->message(
+				$this->basicPresenter()->htmlErrorMessage(
+					'You do not have enough money to challenge this fighter'
+				)
+			);
+
+			return $this->response()->redirectBackWithMessage($this->message());
 		}
 		
 		$fight = $this->commenceFight($boxingMatch, $this->player())->fight();
@@ -113,24 +134,39 @@ class BoxingController extends Controller
 		$fight->originator()->addMoney($reward);
 		$fight->challenger()->addMoney($reward);
 
-		$message = "<div class='alert alert-info'>The fight ended with no clear winner. The steak was split.</div>";
-		return redirect()->back()->with(compact('message'));
+		$this->message(
+			$this->basicPresenter()->htmlInfoMessage(
+				'The fight ended with no clear winner. The steak was split.'
+			)
+		);
+
+		return $this->response()->redirectBackWithMessage($this->message());
 	}
 
 	protected function fightWonResult($fight, $reward)
 	{
 		$fight->challenger()->addMoney($reward);
-			
-		$message = "<div class='alert alert-success'>You knocked the living daylights out of them!</div>";
-		return redirect()->back()->with(compact('message'));
+
+		$this->message(
+			$this->basicPresenter()->htmlSuccessMessage(
+				'You knocked the living daylights out of them!'
+			)
+		);
+
+		return $this->response()->redirectBackWithMessage($this->message());
 	}
 
 	protected function fightLostResult($fight, $reward)
 	{
 		$fight->originator()->addMoney($reward);
 
-		$message = "<div class='alert alert-danger'>You got the crap beaten out of you...</div>";
-		return redirect()->back()->with(compact('message'));	
+		$this->message(
+			$this->basicPresenter()->htmlErrorMessage(
+				'You got the crap beaten out of you...'
+			)
+		);
+
+		return $this->response()->redirectBackWithMessage($this->message());	
 	}
 
 	protected function calculateFightReward(BoxingMatch $boxingMatch)
@@ -148,7 +184,7 @@ class BoxingController extends Controller
 	protected function cancelFight(BoxingMatch $boxingMatch)
 	{
 		if ($boxingMatch->originator->getKey() != $this->player()->getKey()) {
-			$message = $this->invalidFightMessage;
+			$this->message($this->invalidFightMessage);
 		} else {
 			// Give the player their money back
 			$this->player()->addMoney(
@@ -157,9 +193,13 @@ class BoxingController extends Controller
 
 			$boxingMatch->delete();
 
-			$message = "<div class='alert alert-success'>You backed down from the fight</div>";
+			$this->message(
+				$this->basicPresenter()->htmlSuccessMessage(
+					'You backed down from the fight'
+				)
+			);
 		}
 
-		return redirect()->back()->with(compact('message'));
+		return $this->response()->redirectBackWithMessage($this->message());
 	}
 }

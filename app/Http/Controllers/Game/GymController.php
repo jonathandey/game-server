@@ -28,9 +28,10 @@ class GymController extends ActionController
 			'fights' => $boxingMatches,
 		];
 
-		$attributes['timer'] = $this->timerAttribute();
-
-		return view($this->view, $attributes);
+		return $this->withTimer()
+			->response()
+			->view($this->view, $attributes)
+		;
 	}
 
 	public function commit(GymTraining $request)
@@ -40,11 +41,13 @@ class GymController extends ActionController
 
 		try {
 			$this->game()->player()->commit($workout);
-			$message = $workout->presenter()->outcomeMessage();
+			$this->message(
+				$workout->presenter()->outcomeMessage()
+			);
 		} catch (TimerNotReadyException $e) {
 
 		}
 		
-		return redirect()->back()->with(compact('message'));
+		return $this->response()->redirectBackWithMessage($this->message());
 	}
 }
