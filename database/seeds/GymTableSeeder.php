@@ -79,7 +79,7 @@ class GymTableSeeder extends Seeder
         ]);
 
         Gym::firstOrCreate([
-            'name' => 'Shaow Box',
+            'name' => 'Shadow Box',
             'type' => Gym::TYPE_AGILITY,
             'skill_points' => 13,
             'rest_time' => 600

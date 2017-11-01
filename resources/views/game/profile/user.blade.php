@@ -24,7 +24,7 @@
 						</tr>
 						<tr>
 							<td colspan="2">
-								No quote
+								{!! $user->presenter()->quote() !!}
 							</td>
 						</tr>
 					</table>

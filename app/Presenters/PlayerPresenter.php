@@ -4,6 +4,7 @@ namespace App\Presenters;
 
 use App\Game\Player;
 use App\Game\Helpers\Money;
+use App\Game\Helpers\TextFormatter;
 
 class PlayerPresenter extends Presenter
 {
@@ -53,5 +54,10 @@ class PlayerPresenter extends Presenter
 	{
 		$username = e($this->player->name);
 		return "<a href='{$this->profileUrl()}'>{$username}</a>";
+	}
+
+	public function quote()
+	{
+		return (new TextFormatter($this->player->quote))->asBBCode();
 	}
 }

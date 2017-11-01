@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Game;
 
 use App\Game\Game;
 use Illuminate\Http\Request;
+use App\Http\Response\Response;
+use App\Presenters\BasicPresenter;
 use App\Http\Controllers\Controller as BaseController;
 
 abstract class Controller extends BaseController
@@ -45,5 +47,15 @@ abstract class Controller extends BaseController
 		}
 
 		return $this->player = $this->game()->player();
+	}
+
+	public function response()
+	{
+		return resolve(Response::class);
+	}
+
+	public function basicPresenter()
+	{
+		return resolve(BasicPresenter::class);
 	}
 }

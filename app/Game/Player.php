@@ -179,6 +179,15 @@ class Player extends Authenticatable
 		$this->save();
 	}
 
+	public function getQuoteAttribute($value) 
+	{
+		if (is_null($value)) {
+			return $this->attributes['quote'] = 'No quote';
+		}
+
+		return $value;
+	}
+
 	public function getWealthStatusAttribute()
 	{
 		$status = app(Game::class)->wealthStatuses()
